@@ -1,0 +1,39 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "jest",
+    "build": "webpack --config webpack.dev.config.js",
+    "start": "nodemon --watch src --exec \"npm run build && babel-node server.js\""
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.4.0",
+    "@babel/node": "^7.2.2",
+    "@babel/preset-env": "^7.4.2",
+    "@babel/preset-react": "^7.0.0",
+    "babel-jest": "^24.5.0",
+    "babel-loader": "^8.0.5",
+    "css-loader": "^2.1.1",
+    "jest": "^24.5.0",
+    "nodemon": "^1.18.10",
+    "open-browsers": "^1.1.1",
+    "style-loader": "^0.23.1",
+    "webpack-cli": "^3.3.0"
+  },
+  "dependencies": {
+    "@material-ui/core": "^3.9.2",
+    "@material-ui/icons": "^3.0.2",
+    "react": "^16.8.5",
+    "react-dom": "^16.8.5",
+    "react-motion": "^0.5.2",
+    "socket.io": "^2.2.0",
+    "webpack": "^4.29.6"
+  }
+}
