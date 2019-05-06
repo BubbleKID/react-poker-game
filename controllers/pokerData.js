@@ -11,7 +11,7 @@ export const pokerSymbols = [
   '10',
   'J',
   'Q',
-  'K'
+  'K',
 ];
 export const suits = ['H', 'S', 'C', 'D'];
 export const ranks = ['炸', '同花顺', '同花', '顺子', '对子', '单张', '特殊'];

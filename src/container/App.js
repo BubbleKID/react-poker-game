@@ -1,39 +1,40 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
+// import classNames from 'classnames';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { withStyles, MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
 import SvgIcon from '@material-ui/core/SvgIcon';
-import Card from '../Card';
-import CardContainer from '../CardContainer2';
 import { Motion, spring } from 'react-motion';
+import Card from '../Card';
+// import CardContainer from '../CardContainer2';
+
+const io = require('socket.io').listen('http://localhost:3300/');
 
 const styles = theme => ({
   appBar: {
-    position: 'relative'
+    position: 'relative',
   },
   icon: {
-    marginRight: theme.spacing.unit * 2
+    marginRight: theme.spacing.unit * 2,
   },
   heroUnit: {
-    backgroundColor: theme.palette.background.paper
+    backgroundColor: theme.palette.background.paper,
   },
   heroContent: {
     maxWidth: 600,
     height: '100vh',
     margin: '0 auto',
-    padding: `${theme.spacing.unit * 8}px 0 ${theme.spacing.unit * 6}px`
+    padding: `${theme.spacing.unit * 8}px 0 ${theme.spacing.unit * 6}px`,
   },
   heroButtons: {
     marginTop: theme.spacing.unit * 4,
-    marginBottom: theme.spacing.unit * 4
+    marginBottom: theme.spacing.unit * 4,
   },
   layout: {
     width: 'auto',
@@ -42,9 +43,9 @@ const styles = theme => ({
     [theme.breakpoints.up(1100 + theme.spacing.unit * 3 * 2)]: {
       width: 1100,
       marginLeft: 'auto',
-      marginRight: 'auto'
-    }
-  }
+      marginRight: 'auto',
+    },
+  },
 });
 
 // const springConfig = {
@@ -60,9 +61,9 @@ const styles = theme => ({
 
 const colorTheme = createMuiTheme({
   palette: {
-    primary: { main: blue[500] }
+    primary: { main: blue[500] },
   },
-  typography: { useNextVariants: true }
+  typography: { useNextVariants: true },
 });
 
 class App extends Component {
@@ -72,30 +73,32 @@ class App extends Component {
       hand: [],
       socket: io(),
       rotationY: 0,
-      x: 0,
-      deal: false
+      // x: 0,
+      deal: false,
     };
     this.handleClick = this.handleClick.bind(this);
   }
 
-  handleClick() {
-    this.setState({ deal: true, rotationY: 180 });
-    this.state.socket.emit('login', { uid: 111, username: 'mark' });
-    this.state.socket.emit('chat message', '123123');
-  }
-
   componentDidMount() {
-    this.state.socket.on('chat message', msg => {
+    const { socket } = this.state;
+    socket.on('chat message', (msg) => {
       this.setState({
-        hand: msg
+        hand: msg,
       });
     });
+  }
+
+  handleClick() {
+    const { socket } = this.state;
+    this.setState({ deal: true, rotationY: 180 });
+    socket.emit('login', { uid: 111, username: 'mark' });
+    socket.emit('chat message', '123123');
   }
 
   render() {
     const { classes } = this.props;
     // const sprungRange = getSprings(this.state.x, 0);
-
+    const { deal, hand, rotationY } = this.state;
     return (
       <MuiThemeProvider theme={colorTheme}>
         <CssBaseline />
@@ -139,96 +142,96 @@ class App extends Component {
                 <div>
                   <div
                     style={{
-                      WebkitTransform: `translate3d(0px, 200px, 0)`,
-                      transform: `translate3d(0px, 200px, 0)`,
-                      width: `150px`,
-                      height: `200px`,
-                      zIndex: `3`,
-                      position: 'absolute'
+                      WebkitTransform: 'translate3d(0px, 200px, 0)',
+                      transform: 'translate3d(0px, 200px, 0)',
+                      width: '150px',
+                      height: '200px',
+                      zIndex: '3',
+                      position: 'absolute',
                     }}
                   >
                     <Card
                       size={200}
-                      card={'back'}
-                      faceDown={true}
+                      card="back"
+                      faceDown
                       doubleBacked={false}
                       rotationY={0}
                     />
                   </div>
-                  <Motion style={{ x: spring(this.state.deal ? 200 : 0) }}>
+                  <Motion style={{ x: spring(deal ? 200 : 0) }}>
                     {({ x }) => (
                       <div
                         style={{
                           WebkitTransform: `translate3d(${x}px, 200px, 0)`,
                           transform: `translate3d(${x}px, 200px, 0)`,
-                          width: `150px`,
-                          height: `200px`,
-                          zIndex: `3`,
-                          position: 'absolute'
+                          width: '150px',
+                          height: '200px',
+                          zIndex: '3',
+                          position: 'absolute',
                         }}
                       >
                         <Card
                           size={200}
                           card={
-                            this.state.hand.length != 0
-                              ? this.state.hand[0][0].join('')
+                            hand.length !== 0
+                              ? hand[0][0].join('')
                               : ''
                           }
-                          faceDown={true}
+                          faceDown
                           doubleBacked={false}
-                          rotationY={this.state.rotationY}
+                          rotationY={rotationY}
                         />
                       </div>
                     )}
                   </Motion>
-                  <Motion style={{ x: spring(this.state.deal ? 400 : 0) }}>
+                  <Motion style={{ x: spring(deal ? 400 : 0) }}>
                     {({ x }) => (
                       <div
                         style={{
                           WebkitTransform: `translate3d(${x}px, 200px, 0)`,
                           transform: `translate3d(${x}px, 200px, 0)`,
-                          width: `150px`,
-                          height: `200px`,
-                          zIndex: `3`,
-                          position: 'absolute'
+                          width: '150px',
+                          height: '200px',
+                          zIndex: '3',
+                          position: 'absolute',
                         }}
                       >
                         <Card
                           size={200}
                           card={
-                            this.state.hand.length != 0
-                              ? this.state.hand[0][1].join('')
+                            hand.length !== 0
+                              ? hand[0][1].join('')
                               : ''
                           }
-                          faceDown={true}
+                          faceDown
                           doubleBacked={false}
-                          rotationY={this.state.rotationY}
+                          rotationY={rotationY}
                         />
                       </div>
                     )}
                   </Motion>
-                  <Motion style={{ x: spring(this.state.deal ? 600 : 0) }}>
+                  <Motion style={{ x: spring(deal ? 600 : 0) }}>
                     {({ x }) => (
                       <div
                         style={{
                           WebkitTransform: `translate3d(${x}px, 200px, 0)`,
                           transform: `translate3d(${x}px, 200px, 0)`,
-                          width: `150px`,
-                          height: `200px`,
-                          zIndex: `3`,
-                          position: 'absolute'
+                          width: '150px',
+                          height: '200px',
+                          zIndex: '3',
+                          position: 'absolute',
                         }}
                       >
                         <Card
                           size={200}
                           card={
-                            this.state.hand.length != 0
-                              ? this.state.hand[0][2].join('')
+                            hand.length !== 0
+                              ? hand[0][2].join('')
                               : ''
                           }
-                          faceDown={true}
+                          faceDown
                           doubleBacked={false}
-                          rotationY={this.state.rotationY}
+                          rotationY={rotationY}
                         />
                       </div>
                     )}
@@ -244,7 +247,7 @@ class App extends Component {
                 color="textPrimary"
                 gutterBottom
               >
-                {this.state.hand.length !== 0 ? this.state.hand[1] : ''}
+                {hand.length !== 0 ? hand[1] : ''}
               </Typography>
             </div>
           </div>
@@ -255,7 +258,7 @@ class App extends Component {
 }
 
 App.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.Instanceof(Object).isRequired,
 };
 
 export default withStyles(styles)(App);

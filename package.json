@@ -9,7 +9,8 @@
   "scripts": {
     "test": "jest",
     "build": "webpack --config webpack.dev.config.js",
-    "start": "nodemon --watch src --exec \"npm run build && babel-node server.js\""
+    "start": "nodemon --watch src --exec \"npm run build && babel-node server.js\"",
+    "dev": "nodemon --exec babel-node server.js"
   },
   "author": "",
   "license": "ISC",
@@ -23,17 +24,25 @@
     "css-loader": "^2.1.1",
     "jest": "^24.5.0",
     "nodemon": "^1.18.10",
-    "open-browsers": "^1.1.1",
     "style-loader": "^0.23.1",
     "webpack-cli": "^3.3.0"
   },
   "dependencies": {
     "@material-ui/core": "^3.9.2",
     "@material-ui/icons": "^3.0.2",
+    "babel-eslint": "^10.0.1",
+    "classnames": "^2.2.6",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "express": "^4.16.4",
+    "open-browsers": "^1.1.1",
+    "prop-types": "^15.7.2",
     "react": "^16.8.5",
     "react-dom": "^16.8.5",
     "react-motion": "^0.5.2",
     "socket.io": "^2.2.0",
+    "socket.io-client": "^2.2.0",
     "webpack": "^4.29.6"
   }
 }
